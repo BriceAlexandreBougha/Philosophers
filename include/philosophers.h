@@ -30,10 +30,13 @@ typedef struct s_philo {
 }               t_philo;
 
 t_mon init_monitor(int ac, char **av);
-t_philo *init_philos(t_mon monitor);
+t_philo *init_philos(t_mon *monitor);
 int do_philosophers(int ac, char **av);
 void print_action(t_mon *monitor, int id, char *action);
 long get_time();
 void ft_usleep(t_mon *monitor, long duration);
+void take_fork(t_philo *philo);
+void reset_fork(t_philo *philo);
+void *monitor_loop(void *arg);
 
 #endif

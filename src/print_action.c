@@ -8,7 +8,7 @@ void print_action(t_mon *monitor, int id, char *action)
     if (!monitor->dead)
     {
         time_from_start = get_time() - monitor->start_time;
-        printf("%lld %d %s\n", time_from_start, id, action);
+        printf("%ld %d %s\n", time_from_start, id, action);
     }
     pthread_mutex_unlock(&monitor->print);
 }
