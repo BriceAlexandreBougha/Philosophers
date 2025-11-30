@@ -28,7 +28,7 @@ int eat(t_philo *philo, t_mon *monitor)
     print_action(monitor, philo->id, "is eating");
     ft_usleep(monitor, monitor->time_eat);
     reset_fork(philo);
-    philo->meals += 1;
+    philo->meals++;
     return (1);
 }
 

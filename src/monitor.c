@@ -13,8 +13,11 @@ int check_all_eat(t_philo *philos, t_mon *monitor)
         {
             if (philos[i].meals < monitor->must_eat)
                 all_eat = 0;
-            if (!all_eat)
-                return (monitor->dead = 1, 0);
+            if (all_eat)
+            {
+                monitor->dead = 1;
+                return (0);
+            }
             i++;
         }
     }
