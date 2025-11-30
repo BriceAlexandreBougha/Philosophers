@@ -16,13 +16,18 @@ int eat(t_philo *philo, t_mon *monitor)
         return (0);
     }
     if (philo->id % 2 == 0)
-        usleep(50);
+        usleep(100);
     take_fork(philo);
+    if (monitor->dead)
+        return (0);
     pthread_mutex_lock(&monitor->print);
     philo->last_meal = get_time();
     pthread_mutex_unlock(&monitor->print);
+    if (monitor->dead)
+        return (0);
     print_action(monitor, philo->id, "is eating");
     ft_usleep(monitor, monitor->time_eat);
+    reset_fork(philo);
     philo->meals += 1;
     return (1);
 }
@@ -37,13 +42,14 @@ void *philosopher_loop(void *args)
     while (!monitor->dead)
     {
         if (!eat(philo, monitor))
-            return (NULL);
+            break ;
         if (monitor->must_eat != -1 && philo->meals == monitor->must_eat)
             break ;
         print_action(monitor, philo->id, "is sleeping");
         ft_usleep(monitor, monitor->time_sleep);
         print_action(monitor, philo->id, "is thinking");
     }
+    reset_fork(philo);
     return (NULL);
 }
 
@@ -77,14 +83,17 @@ int do_philosophers(int ac, char **av)
     monitor = init_monitor(ac, av);
     if  (!monitor.forks)
         return (-1);
+    monitor.start_time = get_time();
     philos = init_philos(&monitor);
     if (!philos)
         return (free(monitor.forks), -1);
-    monitor.start_time = get_time();
     create_join_threads(monitor.nb, philos);
     i = 0;
     while(i < monitor.nb)
-        pthread_mutex_destroy(philos[i].left_fork);
+    {
+        pthread_mutex_destroy(&monitor.forks[i]);
+        i++;
+    }
     pthread_mutex_destroy(&monitor.print);
     return (free_all(&monitor, philos), 0);
 }

@@ -2,6 +2,8 @@
 
 void take_fork(t_philo *philo)
 {
+    if (philo->monitor->dead)
+        return ;
     if (philo->id % 2 == 0)
     {
         pthread_mutex_lock(philo->left_fork);

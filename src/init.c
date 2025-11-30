@@ -13,6 +13,9 @@ t_mon init_monitor(int ac, char **av)
     if (ac == 6)
         monitor.must_eat = atoi(av[5]);
     monitor.forks = malloc(sizeof(pthread_mutex_t) * monitor.nb);
+    for (int i = 0; i < monitor.nb; i++)
+        pthread_mutex_init(&monitor.forks[i], NULL);
+    pthread_mutex_init(&monitor.print, NULL);
     return (monitor);
 }
 
@@ -21,7 +24,7 @@ t_philo *init_philos(t_mon *monitor)
     t_philo *philos;
     int i;
 
-    philos = malloc(sizeof(struct s_philo) * (*monitor).nb + 1);
+    philos = malloc(sizeof(struct s_philo) * (*monitor).nb);
     if (!philos)
         return (NULL);
     i = 0;

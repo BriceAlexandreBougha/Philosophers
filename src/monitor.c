@@ -1,6 +1,6 @@
 #include "philosophers.h"
 
-static int check_all_eat(t_philo *philos, t_mon *monitor)
+int check_all_eat(t_philo *philos, t_mon *monitor)
 {
     int i;
     int all_eat;
@@ -21,7 +21,7 @@ static int check_all_eat(t_philo *philos, t_mon *monitor)
     return (1);
 }
 
-static int check_dead(t_philo *philos, t_mon *monitor)
+int check_dead(t_philo *philos, t_mon *monitor)
 {
     long now;
     int i;
@@ -31,7 +31,7 @@ static int check_dead(t_philo *philos, t_mon *monitor)
     {
         now = get_time();
         pthread_mutex_lock(&monitor->print);
-        if (philos[i].last_meal - now > monitor->time_die)
+        if (now - philos[i].last_meal >= monitor->time_die)
         {
             monitor->dead = 1;
             printf("%ld %d died\n", now - monitor->start_time, i + 1);
