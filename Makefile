@@ -1,19 +1,34 @@
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread
+SRC	=	src/main.c              \
+        src/init.c              \
+        src/do_philosopher.c    \
+        src/print_action.c      \
+        src/time.c
 
-SRC =	src/main.c	\
+OBJ	=	$(SRC:.c=.o)
 
-INCLUDE	=	include
+NAME	=	philosophers
 
-OBJ = $(SRC:.c=.o)
+CC	=	cc
 
-philo: $(OBJ)
-    $(CC) $(CFLAGS) -o philo $(OBJ) -I $(INCLUDE)
+CFLAGS	=	-Wall -Wextra -Werror
+
+INCLUDE =   include
+
+all:	$(NAME)
+
+%.o:	%.c
+	$(CC) $(CFLAGS) -c $< -o $@  -I $(INCLUDE)
+
+$(NAME):	$(OBJ)
+	$(CC) -o $(NAME) $(OBJ)
 
 clean:
-    rm -f $(OBJ)
+	find . -name "*~" -name "#*#" -delete
+	rm -rf $(OBJ)
 
-fclean: clean
-    rm -f philo
+fclean:	clean
+	rm -rf $(NAME)
 
-re: fclean philo
+re:	fclean	all
+
+.PHONY:	all	clean	fclean
