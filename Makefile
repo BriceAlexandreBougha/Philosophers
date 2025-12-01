@@ -1,10 +1,12 @@
 SRC	=	src/main.c              \
-        src/init.c              \
-        src/do_philosopher.c    \
-        src/print_action.c      \
-        src/time.c              \
-        src/manage_fork.c       \
-        src/monitor.c
+                src/init.c              \
+                src/do_philosopher.c    \
+                src/print_action.c      \
+                src/time.c              \
+                src/manage_fork.c       \
+                src/monitor.c           \
+                src/ft_atoi.c           \
+                src/ft_atol.c           \
 
 OBJ	=	$(SRC:.c=.o)
 

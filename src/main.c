@@ -1,10 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bbougha <bbougha@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/01 13:35:57 by bbougha           #+#    #+#             */
+/*   Updated: 2025/12/01 13:35:57 by bbougha          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
-
-
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-    if (ac < 5 || ac > 6)
-        return (0);
-    return (do_philosophers(ac, av));
+	if (ac < 5 || ac > 6)
+		return (0);
+	return (do_philosophers(ac, av));
 }
