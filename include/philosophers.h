@@ -30,6 +30,8 @@ typedef struct s_mon
 	int				dead;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
+	pthread_mutex_t	check;
+	pthread_mutex_t	inc_meals;
 }	t_mon;
 
 typedef struct s_philo
@@ -41,11 +43,14 @@ typedef struct s_philo
 	t_mon			*monitor;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	int left_lock;
+	int right_lock;
 }	t_philo;
 
 t_mon	init_monitor(int ac, char **av);
 t_philo	*init_philos(t_mon *monitor);
 int		do_philosophers(int ac, char **av);
+int		is_dead(t_mon *monitor);
 void	print_action(t_mon *monitor, int id, char *action);
 long	get_time(void);
 void	ft_usleep(t_mon *monitor, long duration);

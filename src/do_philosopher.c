@@ -23,8 +23,10 @@ static void	free_all(t_mon *monitor, t_philo *philos)
 		i++;
 	}
 	pthread_mutex_destroy(&monitor->print);
+	pthread_mutex_destroy(&monitor->check);
 	free(philos);
 	free(monitor->forks);
+
 }
 
 int	eat(t_philo *philo, t_mon *monitor)
@@ -34,10 +36,11 @@ int	eat(t_philo *philo, t_mon *monitor)
 		pthread_mutex_lock(philo->left_fork);
 		print_action(monitor, philo->id, "has taken a fork");
 		ft_usleep(monitor, monitor->time_die);
+		pthread_mutex_unlock(philo->left_fork);
 		return (0);
 	}
 	if (philo->id % 2 == 0)
-		usleep(100);
+		usleep(10);
 	take_fork(philo);
 	pthread_mutex_lock(&monitor->print);
 	philo->last_meal = get_time();
@@ -45,7 +48,9 @@ int	eat(t_philo *philo, t_mon *monitor)
 	print_action(monitor, philo->id, "is eating");
 	ft_usleep(monitor, monitor->time_eat);
 	reset_fork(philo);
+	pthread_mutex_lock(&monitor->inc_meals);
 	philo->meals++;
+	pthread_mutex_unlock(&monitor->inc_meals);
 	return (1);
 }
 
@@ -56,7 +61,7 @@ void	*philosopher_loop(void *args)
 
 	philo = (t_philo *)args;
 	monitor = philo->monitor;
-	while (!monitor->dead)
+	while (!is_dead(monitor))
 	{
 		if (!eat(philo, monitor))
 			break ;

@@ -12,6 +12,15 @@
 
 #include "philosophers.h"
 
+int	is_dead(t_mon *monitor)
+{
+	pthread_mutex_lock(&monitor->check);
+	if (monitor->dead)
+		return (pthread_mutex_unlock(&monitor->check), 1);
+	return (pthread_mutex_unlock(&monitor->check), 0);
+
+}
+
 int	check_all_eat(t_philo *philos, t_mon *monitor)
 {
 	int	i;
@@ -23,11 +32,15 @@ int	check_all_eat(t_philo *philos, t_mon *monitor)
 		i = 0;
 		while (i < monitor->nb)
 		{
+			pthread_mutex_lock(&monitor->inc_meals);
 			if (philos[i].meals < monitor->must_eat)
 				all_eat = 0;
+			pthread_mutex_unlock(&monitor->inc_meals);
 			if (all_eat)
 			{
+				pthread_mutex_lock(&monitor->check);
 				monitor->dead = 1;
+				pthread_mutex_unlock(&monitor->check);
 				return (0);
 			}
 			i++;
@@ -48,7 +61,9 @@ int	check_dead(t_philo *philos, t_mon *monitor)
 		now = get_time();
 		if (now - philos[i].last_meal > monitor->time_die)
 		{
+			pthread_mutex_lock(&monitor->check);
 			monitor->dead = 1;
+			pthread_mutex_unlock(&monitor->check);
 			printf("%ld %d died\n", now - monitor->start_time, i + 1);
 			return (pthread_mutex_unlock(&monitor->print), 0);
 		}

@@ -25,7 +25,7 @@ void	ft_usleep(t_mon *monitor, long duration)
 	long	start;
 
 	start = get_time();
-	while (!monitor->dead)
+	while (!is_dead(monitor))
 	{
 		if (get_time() - start >= duration)
 			break ;

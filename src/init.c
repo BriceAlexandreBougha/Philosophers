@@ -35,6 +35,8 @@ t_mon	init_monitor(int ac, char **av)
 		i++;
 	}
 	pthread_mutex_init(&monitor.print, NULL);
+	pthread_mutex_init(&monitor.check, NULL);
+	pthread_mutex_init(&monitor.inc_meals, NULL);
 	return (monitor);
 }
 
@@ -55,6 +57,8 @@ t_philo	*init_philos(t_mon *monitor)
 		philos[i].monitor = monitor;
 		philos[i].left_fork = &monitor->forks[i];
 		philos[i].right_fork = &monitor->forks[(i + 1) % (*monitor).nb];
+		philos[i].left_lock = 0;
+		philos[i].right_lock = 0;
 		i++;
 	}
 	return (philos);
